@@ -1,8 +1,8 @@
 const path = require('path')
-
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const webpack = require('webpack')
+const PrettierPlugin = require("prettier-webpack-plugin");
 
 module.exports = {
     mode: 'development',
@@ -32,6 +32,13 @@ module.exports = {
 			}),
 			new CleanWebpackPlugin(),
       new webpack.HotModuleReplacementPlugin(),
+      new PrettierPlugin({
+        printWidth: 80,               // Specify the length of line that the printer will wrap on.
+        tabWidth: 2,                  // Specify the number of spaces per indentation-level.
+        useTabs: false,               // Indent lines with tabs instead of spaces.
+        semi: true,                   // Print semicolons at the ends of statements.
+        encoding: 'utf-8',            // Which encoding scheme to use on files
+      }),
 		],
 
 		module: {
