@@ -10,29 +10,27 @@
     <div class="wrapper">
       <div class="calc">
         <div class="input-block">
-          <input class="input" type="text" disabled />
+          <input class="input" type="text" value="0" disabled />
         </div>
-        <div class="buttons-block">
+        <div class="buttons-block" id="buttons">
           <button class="button gray">(</button>
           <button class="button gray">)</button>
           <button class="button gray">mc</button>
           <button class="button gray">m+</button>
           <button class="button gray">m-</button>
           <button class="button gray">mr</button>
-          <button class="button gray">AC</button>
+          <button class="button gray" id="AC">AC</button>
           <button class="button gray">+/-</button>
           <button class="button gray">%</button>
-          <button class="button orange">&divide;</button>
+          <button data-value="/" class="button orange">&divide;</button>
           <button class="button gray">
             2<sup><small>nd</small></sup>
           </button>
-          <button class="button gray">
-            x<sup><small>2</small></sup>
-          </button>
+          <button class="button gray">x&sup2;</button>
           <button class="button gray">
             x<sup><small>3</small></sup>
           </button>
-          <button class="button gray">
+          <button class="button gray" data-value="10">
             x<sup><small>y</small></sup>
           </button>
           <button class="button gray">
@@ -41,7 +39,7 @@
           <button class="button gray">
             10<sup><small>x</small></sup>
           </button>
-          <button class="button light-gray">7</button>
+          <button class="button light-gray" data-value="7">7</button>
           <button class="button light-gray">8</button>
           <button class="button light-gray">9</button>
           <button class="button orange">&times;</button>
@@ -80,7 +78,7 @@
           <button class="button gray">&pi;</button>
           <button class="button gray">Rand</button>
           <button class="button light-gray zero">0</button>
-          <button class="button light-gray">&sbquo;</button>
+          <button class="button light-gray">,</button>
           <button class="button orange border-right">=</button>
         </div>
       </div>
