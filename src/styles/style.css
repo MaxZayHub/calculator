@@ -10,7 +10,7 @@ body {
 }
 
 .calc {
-  width: 510px;
+  width: 511px;
   height: 245px;
   background-color: rgb(72, 73, 74);
   border-radius: 10px;
@@ -38,11 +38,10 @@ body {
 
 .buttons-block {
   height: 100%;
-  display: grid;
+  display: flex;
   margin: 0px 1px 0px 1px;
-  grid-template-columns: repeat(10, 1fr);
-  grid-column-gap: 1px;
-  grid-row-gap: 1px;
+  flex-wrap: wrap;
+  gap: 1px;
 }
 
 .button {
@@ -88,5 +87,6 @@ body {
 }
 
 .zero {
-  grid-template-columns: 100px;
+  box-sizing: border-box;
+  width: 101px;
 }
