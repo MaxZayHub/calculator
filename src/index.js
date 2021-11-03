@@ -5,12 +5,12 @@ let input = document.querySelector(".input")
 let arr = [
   {
     type: "advancedArifmetic",
-    value: "(",
+    value: "",
     text: "(",
   },
   {
     type: "advancedArifmetic",
-    value: ")",
+    value: "",
     text: ")",
   },
   {
@@ -155,32 +155,32 @@ let arr = [
   },
   {
     type: "advancedArifmetic",
-    value: "!",
+    value: "",
     text: "x!",
   },
   {
     type: "advancedArifmetic",
-    value: "sin",
+    value: "",
     text: "sin",
   },
   {
     type: "advancedArifmetic",
-    value: "cos",
+    value: "",
     text: "cos",
   },
   {
     type: "advancedArifmetic",
-    value: "tan",
+    value: "",
     text: `tan`,
   },
   {
     type: "advancedArifmetic",
-    value: "e",
+    value: "",
     text: `e`,
   },
   {
     type: "advancedArifmetic",
-    value: "EE",
+    value: "",
     text: `EE`,
   },
   {
@@ -205,32 +205,32 @@ let arr = [
   },
   {
     type: "leftCorner",
-    value: "Rad",
+    value: "",
     text: `Rad`,
   },
   {
     type: "advancedArifmetic",
-    value: "sinh",
+    value: "",
     text: `sinh`,
   },
   {
     type: "advancedArifmetic",
-    value: "cosh",
+    value: "",
     text: "cosh",
   },
   {
     type: "advancedArifmetic",
-    value: "tanh",
+    value: "",
     text: `tanh`,
   },
   {
     type: "advancedArifmetic",
-    value: "pi",
+    value: "",
     text: `\u03C0`,
   },
   {
     type: "advancedArifmetic",
-    value: "Rand",
+    value: "",
     text: `Rand`,
   },
   {
@@ -273,5 +273,14 @@ arr.forEach((item) => {
 })
 
 buttonBlock.addEventListener("click", (event) => {
-  console.log(event.target)
+  if (event.target.dataset.value) {
+    if (event.target.dataset.value === "AC") {
+      input.value = "0"
+      return
+    }
+    if (input.value === "0") {
+      input.value = ""
+    }
+    input.value += event.target.dataset.value
+  }
 })
