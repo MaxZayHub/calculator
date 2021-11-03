@@ -11,7 +11,7 @@ body {
 
 .calc {
   width: 511px;
-  height: 245px;
+  height: 246px;
   background-color: rgb(72, 73, 74);
   border-radius: 10px;
   display: flex;
@@ -39,7 +39,7 @@ body {
 .buttons-block {
   height: 100%;
   display: flex;
-  margin: 0px 1px 0px 1px;
+  margin: 0px 1px 1px 1px;
   flex-wrap: wrap;
   gap: 1px;
 }
