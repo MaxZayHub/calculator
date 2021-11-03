@@ -56,32 +56,32 @@ let arr = [
   {
     type: "advancedArifmetic",
     value: "2^nd",
-    text: `2${"nd".sup().small()}`,
+    text: `2ᶰᵐ`,
   },
   {
     type: "advancedArifmetic",
     value: "^2",
-    text: `x${"2".sup().small()}`,
+    text: `x\u00B2`,
   },
   {
     type: "advancedArifmetic",
     value: "^3",
-    text: `x${"3".sup().small()} `,
+    text: `x\u00B3`,
   },
   {
     type: "advancedArifmetic",
     value: "^",
-    text: `x${"y".sup().small()}`,
+    text: `xʸ`,
   },
   {
     type: "advancedArifmetic",
     value: "e^",
-    text: `e${"x".sup().small()}`,
+    text: `eˣ`,
   },
   {
     type: "advancedArifmetic",
     value: "10^",
-    text: `10${"x".sup().small()}`,
+    text: `10ˣ`,
   },
   {
     type: "number",
@@ -120,8 +120,8 @@ let arr = [
   },
   {
     type: "advancedArifmetic",
-    value: "xy",
-    text: `${"y".sup().small()}\u221Ax`,
+    value: "y_sqrt(x)",
+    text: `ʸ\u221Ax`,
   },
   {
     type: "advancedArifmetic",
@@ -131,7 +131,7 @@ let arr = [
   {
     type: "advancedArifmetic",
     value: "log10",
-    text: `log${"10".sub().small()}`,
+    text: `log\u2081\u2080`,
   },
   {
     type: "number",
@@ -270,4 +270,8 @@ arr.forEach((item) => {
   button.dataset.value = item.value
   button.innerHTML = item.text
   buttonBlock.appendChild(button)
+})
+
+buttonBlock.addEventListener("click", (event) => {
+  console.log(event.target)
 })
