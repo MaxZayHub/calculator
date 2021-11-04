@@ -2,7 +2,11 @@ import "./styles/style.css"
 
 let input = document.querySelector(".input")
 
-let arr = [
+const buttonBlock = document.querySelector(".buttons-block")
+
+let inputArr = []
+
+let arrButtons = [
   {
     type: "advancedArifmetic",
     value: "",
@@ -240,7 +244,7 @@ let arr = [
   },
   {
     type: "number",
-    value: ",",
+    value: ".",
     text: ",",
   },
   {
@@ -250,9 +254,7 @@ let arr = [
   },
 ]
 
-const buttonBlock = document.querySelector(".buttons-block")
-
-arr.forEach((item) => {
+arrButtons.forEach((item) => {
   let button = document.createElement("button")
   if (item.type === "advancedArifmetic") {
     button.className = "button gray"
@@ -275,12 +277,38 @@ arr.forEach((item) => {
 buttonBlock.addEventListener("click", (event) => {
   if (event.target.dataset.value) {
     if (event.target.dataset.value === "AC") {
+      inputArr = []
       input.value = "0"
       return
     }
     if (input.value === "0") {
       input.value = ""
     }
+    if (!isNaN(event.target.dataset.value)) {
+      input.value += event.target.dataset.value
+      if (inputArr.length === 0) {
+        inputArr.push(event.target.dataset.value)
+      } else if (isNaN(inputArr[inputArr.length - 1])) {
+        inputArr.push(event.target.dataset.value)
+      } else {
+        inputArr[inputArr.length - 1] += event.target.dataset.value
+      }
+      console.log(inputArr)
+      return
+    }
+    if (event.target.dataset.value === ".") {
+      if (
+        !isNaN(inputArr[inputArr.length - 1]) &&
+        !inputArr[inputArr.length - 1].includes(".")
+      ) {
+        input.value += event.target.dataset.value
+        inputArr[inputArr.length - 1] += event.target.dataset.value
+      }
+      console.log(inputArr)
+      return
+    }
     input.value += event.target.dataset.value
+    inputArr.push(event.target.dataset.value)
+    console.log(inputArr)
   }
 })
