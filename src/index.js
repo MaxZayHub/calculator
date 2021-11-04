@@ -307,8 +307,13 @@ buttonBlock.addEventListener("click", (event) => {
       console.log(inputArr)
       return
     }
-    input.value += event.target.dataset.value
-    inputArr.push(event.target.dataset.value)
-    console.log(inputArr)
+    if (isNaN(event.target.dataset.value)) {
+      if (!isNaN(inputArr[inputArr.length - 1])) {
+        input.value += event.target.dataset.value
+        inputArr.push(event.target.dataset.value)
+        console.log(inputArr)
+      }
+      return
+    }
   }
 })
