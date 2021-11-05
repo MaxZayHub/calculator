@@ -4,6 +4,8 @@ let input = document.querySelector(".input")
 
 const buttonBlock = document.querySelector(".buttons-block")
 
+let memory = ""
+
 let inputArr = []
 
 let arrButtons = [
@@ -39,13 +41,13 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "AC",
-    text: "AC",
+    value: "ms",
+    text: "ms",
   },
   {
     type: "advancedArifmetic",
-    value: "+/-",
-    text: "+/-",
+    value: "AC",
+    text: "AC",
   },
   {
     type: "advancedArifmetic",
@@ -60,7 +62,7 @@ let arrButtons = [
   {
     type: "advancedArifmetic",
     value: "2^nd",
-    text: `2ᶰᵐ`,
+    text: `2\u207Fᵈ`,
   },
   {
     type: "advancedArifmetic",
@@ -124,12 +126,12 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "y_sqrt(x)",
+    value: ["^", "(", "1", "/"],
     text: `ʸ\u221Ax`,
   },
   {
     type: "advancedArifmetic",
-    value: "ln",
+    value: ["ln", "("],
     text: `ln`,
   },
   {
@@ -276,6 +278,37 @@ arrButtons.forEach((item) => {
 
 buttonBlock.addEventListener("click", (event) => {
   if (event.target.dataset.value) {
+    if (event.target.dataset.value === "ms" && inputArr.length === 1) {
+      memory = inputArr[0]
+      return
+    }
+    if (event.target.dataset.value === "mr") {
+      if (input.value === "0") input.value = ""
+      if (
+        isNaN(inputArr[inputArr.length - 1]) &&
+        inputArr[inputArr.length - 1] !== ")"
+      ) {
+        inputArr.push(memory)
+        input.value += memory
+      }
+      return
+    }
+    if (event.target.dataset.value === "mc") {
+      memory = ""
+      return
+    }
+    if (event.target.dataset.value === "m+" && inputArr.length === 1) {
+      memory = parseFloat(
+        (parseFloat(inputArr[0]) + parseFloat(memory)).toPrecision(12)
+      ).toString()
+      return
+    }
+    if (event.target.dataset.value === "m-" && inputArr.length === 1) {
+      memory = parseFloat(
+        (parseFloat(memory) - parseFloat(inputArr[0])).toPrecision(12)
+      ).toString()
+      return
+    }
     if (event.target.dataset.value === "=") {
       if ("+ - / ^ \u00D7".includes(inputArr[inputArr.length - 1])) {
         inputArr.pop()
@@ -467,6 +500,7 @@ const poland = (arr) => {
       }
     }
   })
+  if (stack.includes("(" || ")")) return "Error"
   return calc(outStr.concat(stack.reverse()))
 }
 
@@ -491,6 +525,7 @@ const exponentiation = (a, b) => {
 }
 
 const sqrt = (a) => {
+  console.log(a)
   return a >= 0 ? Math.sqrt(a) : "Error"
 }
 
