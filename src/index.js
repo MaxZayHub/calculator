@@ -136,7 +136,7 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "log10",
+    value: ["log10", "("],
     text: `log\u2081\u2080`,
   },
   {
@@ -368,9 +368,14 @@ buttonBlock.addEventListener("click", (event) => {
         let arrValue = event.target.dataset.value.split(",")
         if (!isNaN(arrValue[0]) || arrValue[0] === "e") {
           if (input.value === "0") input.value = ""
-          input.value += arrValue.join("")
-          inputArr = inputArr.concat(arrValue)
-          return
+        } else if (arrValue[0] === "ln" || arrValue[0] === "log10") {
+          if (input.value === "0") input.value = ""
+          if (
+            !isNaN(inputArr[inputArr.length - 1]) ||
+            inputArr[inputArr.length - 1] === "(" ||
+            inputArr[inputArr.length - 1] === ")"
+          )
+            return
         } else {
           if (
             isNaN(inputArr[inputArr.length - 1]) ||
@@ -378,10 +383,9 @@ buttonBlock.addEventListener("click", (event) => {
           )
             return
           if (input.value === "0") return
-          input.value += arrValue.join("")
-          inputArr = inputArr.concat(arrValue)
-          return
         }
+        input.value += arrValue.join("")
+        inputArr = inputArr.concat(arrValue)
       }
       if (
         event.target.dataset.value === "\u221A" ||
@@ -427,6 +431,12 @@ const makeOreration = (arr, operation) => {
     case "\u221B": {
       return sqrt3(arr[0])
     }
+    case "ln": {
+      return log(arr[0])
+    }
+    case "log10": {
+      return logX10(arr[0])
+    }
   }
 }
 
@@ -437,10 +447,15 @@ const calc = (arr) => {
       arr[i] = Math.E
     }
     if (isNaN(arr[i]) && arr[i] !== "e") {
-      if (arr[i] === "\u221A" || arr[i] === "\u221B") {
-        let res = makeOreration([parseFloat(arr[i + 1])], arr[i])
-        arr.splice(i, 2)
-        arr.splice(i, 0, res)
+      if (
+        arr[i] === "\u221A" ||
+        arr[i] === "\u221B" ||
+        arr[i] === "ln" ||
+        arr[i] === "log10"
+      ) {
+        let res = makeOreration([parseFloat(arr[i - 1])], arr[i])
+        arr.splice(i - 1, 2)
+        arr.splice(i - 1, 0, res)
         i -= 1
       } else {
         let res = makeOreration(
@@ -462,12 +477,7 @@ const poland = (arr) => {
   let outStr = []
 
   arr.forEach((item) => {
-    if (
-      !isNaN(item) ||
-      item === "e" ||
-      item === "\u221A" ||
-      item === "\u221B"
-    ) {
+    if (!isNaN(item) || item === "e") {
       outStr.push(item)
     } else {
       if (item === "+" || item === "-") {
@@ -478,7 +488,14 @@ const poland = (arr) => {
           outStr.push(stack.pop())
         } else {
           for (let i = stack.length - 1; i >= 0; i--) {
-            if (stack[i] === "\u00D7" || stack[i] === "/" || stack[i] === "^") {
+            if (
+              stack[i] === "\u00D7" ||
+              stack[i] === "/" ||
+              stack[i] === "^" ||
+              stack[i] === "\u221A" ||
+              stack[i] === "\u221B" ||
+              stack[i] === "ln"
+            ) {
               outStr.push(stack.pop())
             } else {
               break
@@ -531,4 +548,12 @@ const sqrt = (a) => {
 
 const sqrt3 = (a) => {
   return a ** (1 / 3)
+}
+
+const log = (a) => {
+  return Math.log(a)
+}
+
+const logX10 = (a) => {
+  return Math.log(a) / Math.log(10)
 }
