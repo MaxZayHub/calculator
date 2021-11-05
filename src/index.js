@@ -114,12 +114,12 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "sqrt",
+    value: "\u221A",
     text: "\u221Ax",
   },
   {
     type: "advancedArifmetic",
-    value: "sqrt3",
+    value: "\u221B",
     text: `\u221Bx`,
   },
   {
@@ -277,6 +277,9 @@ arrButtons.forEach((item) => {
 buttonBlock.addEventListener("click", (event) => {
   if (event.target.dataset.value) {
     if (event.target.dataset.value === "=") {
+      if ("+ - / ^ \u00D7".includes(inputArr[inputArr.length - 1])) {
+        inputArr.pop()
+      }
       let result = poland(inputArr)
       input.value = result
       inputArr = []
@@ -313,6 +316,28 @@ buttonBlock.addEventListener("click", (event) => {
       return
     }
     if (isNaN(event.target.dataset.value)) {
+      if (event.target.dataset.value.includes(",")) {
+        let arrValue = event.target.dataset.value.split(",")
+        if (!isNaN(arrValue[0]) || arrValue[0] === "e") {
+          if (input.value === "0") input.value = ""
+          input.value += arrValue.join("")
+          inputArr = inputArr.concat(arrValue)
+          return
+        } else {
+          if (input.value === "0") return
+          input.value += arrValue.join("")
+          inputArr = inputArr.concat(arrValue)
+          return
+        }
+      }
+      if (
+        event.target.dataset.value === "\u221A" ||
+        event.target.dataset.value === "\u221B"
+      ) {
+        if (input.value === "0") input.value = ""
+        input.value += event.target.dataset.value
+        inputArr.push(event.target.dataset.value)
+      }
       if (inputArr.length === 0) return
       if (!isNaN(inputArr[inputArr.length - 1])) {
         input.value += event.target.dataset.value
@@ -323,41 +348,53 @@ buttonBlock.addEventListener("click", (event) => {
   }
 })
 
+const makeOreration = (arr, operation) => {
+  switch (operation) {
+    case "+": {
+      return plus(arr[0], arr[1])
+    }
+    case "-": {
+      return minus(arr[0], arr[1])
+    }
+    case "/": {
+      return divide(arr[0], arr[1])
+    }
+    case "\u00D7": {
+      return multiplication(arr[0], arr[1])
+    }
+    case "^": {
+      return exponentiation(arr[0], arr[1])
+    }
+    case "\u221A": {
+      return sqrt(arr[0])
+    }
+    case "\u221B": {
+      return sqrt3(arr[0])
+    }
+  }
+}
+
 const calc = (arr) => {
   for (let i = 0; i < arr.length; i++) {
-    if (isNaN(arr[i])) {
-      if (arr[i] === "+") {
-        let res = plus(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
-        arr.splice(i - 2, 3)
-        arr.splice(i - 2, 0, res)
-      }
-      if (arr[i] === "-") {
-        let res = minus(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
-        arr.splice(i - 2, 3)
-        arr.splice(i - 2, 0, res)
-      }
-      if (arr[i] === "\u00D7") {
-        let res = multiplication(
-          parseInt(arr[i - 2], 10),
-          parseInt(arr[i - 1], 10)
+    if (arr[i] === "e") {
+      arr[i] = Math.E
+    }
+    if (isNaN(arr[i]) && arr[i] !== "e") {
+      if (arr[i] === "\u221A" || arr[i] === "\u221B") {
+        let res = makeOreration([parseFloat(arr[i + 1])], arr[i])
+        arr.splice(i, 2)
+        arr.splice(i, 0, res)
+        i -= 1
+      } else {
+        let res = makeOreration(
+          [parseFloat(arr[i - 2]), parseFloat(arr[i - 1])],
+          arr[i]
         )
+        if (res === "Error") return "Error"
         arr.splice(i - 2, 3)
         arr.splice(i - 2, 0, res)
+        i -= 2
       }
-      if (arr[i] === "/") {
-        let res = divide(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
-        arr.splice(i - 2, 3)
-        arr.splice(i - 2, 0, res)
-      }
-      if (arr[i] === "^") {
-        let res = multiplication(
-          parseInt(arr[i - 2], 10),
-          parseInt(arr[i - 1], 10)
-        )
-        arr.splice(i - 2, 3)
-        arr.splice(i - 2, 0, res)
-      }
-      i -= 2
     }
   }
   return arr[0]
@@ -368,7 +405,12 @@ const poland = (arr) => {
   let outStr = []
 
   arr.forEach((item) => {
-    if (!isNaN(item)) {
+    if (
+      !isNaN(item) ||
+      item === "e" ||
+      item === "\u221A" ||
+      item === "\u221B"
+    ) {
       outStr.push(item)
     } else {
       if (item === "+" || item === "-") {
@@ -394,21 +436,29 @@ const poland = (arr) => {
 }
 
 const plus = (a, b) => {
-  return (a + b).toString()
+  return parseFloat((a + b).toPrecision(12)).toString()
 }
 
 const minus = (a, b) => {
-  return (a - b).toString()
+  return parseFloat((a - b).toPrecision(12)).toString()
 }
 
 const multiplication = (a, b) => {
-  return (a * b).toString()
+  return parseFloat((a * b).toPrecision(12)).toString()
 }
 
 const divide = (a, b) => {
-  return (a / b).toString()
+  return b === 0 ? "Error" : parseFloat((a / b).toPrecision(12)).toString()
 }
 
 const exponentiation = (a, b) => {
-  return (a ** b).toString()
+  return parseFloat((a ** b).toPrecision(12)).toString()
+}
+
+const sqrt = (a) => {
+  return a >= 0 ? Math.sqrt(a) : "Error"
+}
+
+const sqrt3 = (a) => {
+  return a ** (1 / 3)
 }
