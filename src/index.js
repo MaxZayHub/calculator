@@ -64,12 +64,12 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "^2",
+    value: ["^", "2"],
     text: `x\u00B2`,
   },
   {
     type: "advancedArifmetic",
-    value: "^3",
+    value: ["^", "3"],
     text: `x\u00B3`,
   },
   {
@@ -79,12 +79,12 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "e^",
+    value: ["e", "^"],
     text: `eˣ`,
   },
   {
     type: "advancedArifmetic",
-    value: "10^",
+    value: ["10", "^"],
     text: `10ˣ`,
   },
   {
@@ -104,12 +104,12 @@ let arrButtons = [
   },
   {
     type: "basicArifmetic",
-    value: "*",
+    value: "\u00D7",
     text: "\u00D7",
   },
   {
     type: "advancedArifmetic",
-    value: "1/",
+    value: ["1", "/"],
     text: `1/x`,
   },
   {
@@ -276,12 +276,19 @@ arrButtons.forEach((item) => {
 
 buttonBlock.addEventListener("click", (event) => {
   if (event.target.dataset.value) {
+    if (event.target.dataset.value === "=") {
+      let result = poland(inputArr)
+      input.value = result
+      inputArr = []
+      inputArr.push(result)
+      return
+    }
     if (event.target.dataset.value === "AC") {
       inputArr = []
       input.value = "0"
       return
     }
-    if (input.value === "0") {
+    if (input.value === "0" && !isNaN(event.target.dataset.value)) {
       input.value = ""
     }
     if (!isNaN(event.target.dataset.value)) {
@@ -293,7 +300,6 @@ buttonBlock.addEventListener("click", (event) => {
       } else {
         inputArr[inputArr.length - 1] += event.target.dataset.value
       }
-      console.log(inputArr)
       return
     }
     if (event.target.dataset.value === ".") {
@@ -304,16 +310,72 @@ buttonBlock.addEventListener("click", (event) => {
         input.value += event.target.dataset.value
         inputArr[inputArr.length - 1] += event.target.dataset.value
       }
-      console.log(inputArr)
       return
     }
     if (isNaN(event.target.dataset.value)) {
+      if (inputArr.length === 0) return
       if (!isNaN(inputArr[inputArr.length - 1])) {
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
-        console.log(inputArr)
       }
       return
     }
   }
 })
+
+const calc = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (isNaN(arr[i])) {
+      if (arr[i] === "+") {
+        let res = plus(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
+        arr.splice(i - 2, 3)
+        arr.splice(i - 2, 0, res)
+      }
+      if (arr[i] === "-") {
+        let res = minus(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
+        arr.splice(i - 2, 3)
+        arr.splice(i - 2, 0, res)
+      }
+      i -= 2
+    }
+  }
+  return arr[0]
+}
+
+const poland = (arr) => {
+  let stack = []
+  let outStr = []
+
+  arr.forEach((item) => {
+    if (!isNaN(item)) {
+      outStr.push(item)
+    } else {
+      if (item === "+" || item === "-") {
+        if (
+          stack[stack.length - 1] === "+" ||
+          stack[stack.length - 1] === "-"
+        ) {
+          outStr.push(stack.pop())
+        } else {
+          for (let i = stack.length - 1; i >= 0; i--) {
+            if (stack[i] === "\u00D7" || stack[i] === "/" || stack[i] === "^") {
+              outStr.push(stack.pop())
+            } else {
+              break
+            }
+          }
+        }
+      }
+      stack.push(item)
+    }
+  })
+  return calc(outStr.concat(stack.reverse()))
+}
+
+const plus = (a, b) => {
+  return (a + b).toString()
+}
+
+const minus = (a, b) => {
+  return (a - b).toString()
+}
