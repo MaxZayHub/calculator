@@ -403,7 +403,6 @@ buttonBlock.addEventListener("click", (event) => {
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
       }
-      return
     }
   }
 })
