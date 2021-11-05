@@ -9,12 +9,12 @@ let inputArr = []
 let arrButtons = [
   {
     type: "advancedArifmetic",
-    value: "",
+    value: "(",
     text: "(",
   },
   {
     type: "advancedArifmetic",
-    value: "",
+    value: ")",
     text: ")",
   },
   {
@@ -295,10 +295,14 @@ buttonBlock.addEventListener("click", (event) => {
       input.value = ""
     }
     if (!isNaN(event.target.dataset.value)) {
+      if (inputArr[inputArr.length - 1] === ")") return
       input.value += event.target.dataset.value
       if (inputArr.length === 0) {
         inputArr.push(event.target.dataset.value)
-      } else if (isNaN(inputArr[inputArr.length - 1])) {
+      } else if (
+        isNaN(inputArr[inputArr.length - 1]) &&
+        inputArr[inputArr.length - 1] !== ")"
+      ) {
         inputArr.push(event.target.dataset.value)
       } else {
         inputArr[inputArr.length - 1] += event.target.dataset.value
@@ -316,6 +320,17 @@ buttonBlock.addEventListener("click", (event) => {
       return
     }
     if (isNaN(event.target.dataset.value)) {
+      if (event.target.dataset.value === "(") {
+        if (input.value === "0") input.value = ""
+        if (
+          !isNaN(inputArr[inputArr.length - 1]) ||
+          inputArr[inputArr.length - 1] === ")"
+        )
+          return
+        input.value += event.target.dataset.value
+        inputArr.push(event.target.dataset.value)
+        return
+      }
       if (event.target.dataset.value.includes(",")) {
         let arrValue = event.target.dataset.value.split(",")
         if (!isNaN(arrValue[0]) || arrValue[0] === "e") {
@@ -324,6 +339,11 @@ buttonBlock.addEventListener("click", (event) => {
           inputArr = inputArr.concat(arrValue)
           return
         } else {
+          if (
+            isNaN(inputArr[inputArr.length - 1]) ||
+            inputArr[inputArr.length - 1] === ")"
+          )
+            return
           if (input.value === "0") return
           input.value += arrValue.join("")
           inputArr = inputArr.concat(arrValue)
@@ -339,7 +359,10 @@ buttonBlock.addEventListener("click", (event) => {
         inputArr.push(event.target.dataset.value)
       }
       if (inputArr.length === 0) return
-      if (!isNaN(inputArr[inputArr.length - 1])) {
+      if (
+        !isNaN(inputArr[inputArr.length - 1]) ||
+        inputArr[inputArr.length - 1] === ")"
+      ) {
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
       }
@@ -375,6 +398,7 @@ const makeOreration = (arr, operation) => {
 }
 
 const calc = (arr) => {
+  console.log(arr)
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] === "e") {
       arr[i] = Math.E
@@ -427,9 +451,20 @@ const poland = (arr) => {
               break
             }
           }
+          stack.push(item)
         }
+      } else if (item === ")") {
+        for (let i = stack.length - 1; i >= 0; i--) {
+          if (stack[i] === "(") {
+            stack.pop()
+            break
+          }
+
+          outStr.push(stack.pop())
+        }
+      } else {
+        stack.push(item)
       }
-      stack.push(item)
     }
   })
   return calc(outStr.concat(stack.reverse()))
