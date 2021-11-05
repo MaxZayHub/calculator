@@ -336,6 +336,27 @@ const calc = (arr) => {
         arr.splice(i - 2, 3)
         arr.splice(i - 2, 0, res)
       }
+      if (arr[i] === "\u00D7") {
+        let res = multiplication(
+          parseInt(arr[i - 2], 10),
+          parseInt(arr[i - 1], 10)
+        )
+        arr.splice(i - 2, 3)
+        arr.splice(i - 2, 0, res)
+      }
+      if (arr[i] === "/") {
+        let res = divide(parseInt(arr[i - 2], 10), parseInt(arr[i - 1], 10))
+        arr.splice(i - 2, 3)
+        arr.splice(i - 2, 0, res)
+      }
+      if (arr[i] === "^") {
+        let res = multiplication(
+          parseInt(arr[i - 2], 10),
+          parseInt(arr[i - 1], 10)
+        )
+        arr.splice(i - 2, 3)
+        arr.splice(i - 2, 0, res)
+      }
       i -= 2
     }
   }
@@ -378,4 +399,16 @@ const plus = (a, b) => {
 
 const minus = (a, b) => {
   return (a - b).toString()
+}
+
+const multiplication = (a, b) => {
+  return (a * b).toString()
+}
+
+const divide = (a, b) => {
+  return (a / b).toString()
+}
+
+const exponentiation = (a, b) => {
+  return (a ** b).toString()
 }
