@@ -3,12 +3,12 @@ import { poland } from "./scripts/poland.js"
 
 let input = document.querySelector(".input")
 
+let switchButton = document.querySelector(".switch")
+
 const buttonBlock = document.querySelector(".buttons-block")
 
 let memory = ""
-
 let inputArr = []
-
 let arrButtons = [
   {
     type: "advancedArifmetic",
@@ -257,20 +257,27 @@ let arrButtons = [
   },
 ]
 
+switchButton.addEventListener("click", () => {
+  document.body.classList.toggle("light")
+  switchButton.innerText = document.body.classList.contains("light")
+    ? "Сменить на темную"
+    : "Сменить на светлую"
+})
+
 arrButtons.forEach((item) => {
   let button = document.createElement("button")
   if (item.type === "advancedArifmetic") {
-    button.className = "button gray"
+    button.className = "button advancedArifmetic"
   } else if (item.type === "basicArifmetic") {
-    button.className = "button orange"
+    button.className = "button basicArifmetic"
   } else if (item.type === "number") {
-    button.className = "button light-gray"
+    button.className = "button number"
   } else if (item.type === "zero") {
-    button.className = "button light-gray zero"
+    button.className = "button number zero"
   } else if (item.type === "rightCorner") {
-    button.className = "button orange border-right"
+    button.className = "button basicArifmetic border-right"
   } else if (item.type === "leftCorner") {
-    button.className = "button gray border-left"
+    button.className = "button advancedArifmetic border-left"
   }
   button.dataset.value = item.value
   button.innerHTML = item.text
@@ -311,6 +318,7 @@ buttonBlock.addEventListener("click", (event) => {
       return
     }
     if (event.target.dataset.value === "=") {
+      if (inputArr.length < 2) return
       if ("+ - / ^ \u00D7".includes(inputArr[inputArr.length - 1])) {
         inputArr.pop()
       }
