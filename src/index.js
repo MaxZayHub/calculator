@@ -354,6 +354,12 @@ buttonBlock.addEventListener("click", (event) => {
       return
     }
     if (isNaN(event.target.dataset.value)) {
+      if (event.target.dataset.value === "-") {
+        if (input.value === "0") input.value = ""
+        if (inputArr[inputArr.length - 1] === "-") return
+        input.value += event.target.dataset.value
+        inputArr.push(event.target.dataset.value)
+      }
       if (event.target.dataset.value === "(") {
         if (input.value === "0") input.value = ""
         if (

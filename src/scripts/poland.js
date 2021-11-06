@@ -14,6 +14,7 @@ export const poland = (arr) => {
           stack[stack.length - 1] === "-"
         ) {
           outStr.push(stack.pop())
+          stack.push(item)
         } else {
           for (let i = stack.length - 1; i >= 0; i--) {
             if (

@@ -13,18 +13,26 @@ export const calc = (arr) => {
         arr[i] === "log10"
       ) {
         let res = makeOreration([parseFloat(arr[i - 1])], arr[i])
+        if (res === "Error") return "Error"
         arr.splice(i - 1, 2)
         arr.splice(i - 1, 0, res)
         i -= 1
       } else {
-        let res = makeOreration(
-          [parseFloat(arr[i - 2]), parseFloat(arr[i - 1])],
-          arr[i]
-        )
-        if (res === "Error") return "Error"
-        arr.splice(i - 2, 3)
-        arr.splice(i - 2, 0, res)
-        i -= 2
+        if (arr[i] === "-" && (!arr[i - 2] || isNaN(arr[i - 2]))) {
+          let res = makeOreration([parseFloat(arr[i - 1])], "--")
+          arr.splice(i - 1, 2)
+          arr.splice(i - 1, 0, res)
+          i -= 1
+        } else {
+          let res = makeOreration(
+            [parseFloat(arr[i - 2]), parseFloat(arr[i - 1])],
+            arr[i]
+          )
+          if (res === "Error") return "Error"
+          arr.splice(i - 2, 3)
+          arr.splice(i - 2, 0, res)
+          i -= 2
+        }
       }
     }
   }

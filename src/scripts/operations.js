@@ -30,6 +30,9 @@ export const makeOreration = (arr, operation) => {
     case "%": {
       return percent(arr[0], arr[1])
     }
+    case "--": {
+      return unoMinus(arr[0])
+    }
   }
 }
 
@@ -54,22 +57,25 @@ const exponentiation = (a, b) => {
 }
 
 const sqrt = (a) => {
-  console.log(a)
-  return a >= 0 ? Math.sqrt(a) : "Error"
+  return a >= 0 ? Math.sqrt(a).toString() : "Error"
 }
 
 const sqrt3 = (a) => {
-  return a ** (1 / 3)
+  return (a ** (1 / 3)).toString()
 }
 
 const log = (a) => {
-  return Math.log(a)
+  return Math.log(a).toString()
 }
 
 const logX10 = (a) => {
-  return Math.log(a) / Math.log(10)
+  return (Math.log(a) / Math.log(10)).toString()
 }
 
 const percent = (a, b) => {
-  return a % b
+  return (a % b).toString()
+}
+
+const unoMinus = (a) => {
+  return (-a).toString()
 }
