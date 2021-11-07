@@ -1,6 +1,9 @@
 import { makeOreration } from "./operations"
+import { poland } from "./poland"
 
-export const calc = (arr) => {
+export const calc = (inputArr) => {
+  let arr = poland(inputArr)
+  if (arr === "Error") return "Error"
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] === "e") {
       arr[i] = Math.E

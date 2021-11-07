@@ -1,5 +1,5 @@
 import "./styles/style.css"
-import { poland } from "./scripts/poland.js"
+import { calc } from "./scripts/calc.js"
 
 let input = document.querySelector(".input")
 
@@ -322,7 +322,7 @@ buttonBlock.addEventListener("click", (event) => {
       if ("+ - / ^ \u00D7".includes(inputArr[inputArr.length - 1])) {
         inputArr.pop()
       }
-      let result = poland(inputArr)
+      let result = calc(inputArr)
       input.value = result
       inputArr = []
       inputArr.push(result)
