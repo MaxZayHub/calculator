@@ -382,6 +382,7 @@ buttonBlock.addEventListener("click", (event) => {
       if (event.target.dataset.value.includes(",")) {
         let arrValue = event.target.dataset.value.split(",")
         if (!isNaN(arrValue[0]) || arrValue[0] === "e") {
+          if (!isNaN(inputArr[inputArr.length - 1])) return
           if (input.value === "0") input.value = ""
         } else if (arrValue[0] === "ln" || arrValue[0] === "log10") {
           if (input.value === "0") input.value = ""
