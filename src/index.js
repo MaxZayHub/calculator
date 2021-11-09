@@ -52,8 +52,8 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "%",
-    text: "%",
+    value: "C",
+    text: "C",
   },
   {
     type: "basicArifmetic",
@@ -162,8 +162,8 @@ let arrButtons = [
   },
   {
     type: "advancedArifmetic",
-    value: "",
-    text: "x!",
+    value: "%",
+    text: "%",
   },
   {
     type: "advancedArifmetic",
@@ -309,6 +309,11 @@ buttonBlock.addEventListener("click", (event) => {
       memory = parseFloat(
         (parseFloat(inputArr[0]) + parseFloat(memory)).toPrecision(12)
       ).toString()
+      return
+    }
+    if (event.target.dataset.value === "C") {
+      inputArr.pop()
+      input.value = inputArr.join("")
       return
     }
     if (event.target.dataset.value === "m-" && inputArr.length === 1) {
