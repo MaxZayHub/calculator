@@ -53,7 +53,7 @@ let arrButtons = [
   {
     type: "advancedArifmetic",
     value: "C",
-    text: "C",
+    text: "←",
   },
   {
     type: "basicArifmetic",
@@ -257,6 +257,8 @@ let arrButtons = [
   },
 ]
 
+let state = []
+
 switchButton.addEventListener("click", () => {
   document.body.classList.toggle("light")
   switchButton.innerText = document.body.classList.contains("light")
@@ -297,6 +299,7 @@ buttonBlock.addEventListener("click", (event) => {
         inputArr[inputArr.length - 1] !== ")"
       ) {
         inputArr.push(memory)
+        state.push([...inputArr])
         input.value += memory
       }
       return
@@ -312,8 +315,15 @@ buttonBlock.addEventListener("click", (event) => {
       return
     }
     if (event.target.dataset.value === "C") {
-      inputArr.pop()
-      input.value = inputArr.join("")
+      if (state.length > 1) {
+        state.pop()
+        inputArr = state[state.length - 1]
+        input.value = inputArr.join("")
+      } else {
+        state.pop()
+        input.value = "0"
+        inputArr = []
+      }
       return
     }
     if (event.target.dataset.value === "m-" && inputArr.length === 1) {
@@ -327,10 +337,15 @@ buttonBlock.addEventListener("click", (event) => {
       if ("+ - / ^ \u00D7".includes(inputArr[inputArr.length - 1])) {
         inputArr.pop()
       }
+      if ("\u221A \u221B".includes(inputArr[inputArr.length - 1])) {
+        inputArr.pop()
+        inputArr.pop()
+      }
       let result = calc(inputArr)
       input.value = result
       inputArr = []
       inputArr.push(result)
+      state.push([...inputArr])
       return
     }
     if (event.target.dataset.value === "AC") {
@@ -338,19 +353,19 @@ buttonBlock.addEventListener("click", (event) => {
       input.value = "0"
       return
     }
-    if (input.value === "0" && !isNaN(event.target.dataset.value)) {
-      input.value = ""
-    }
     if (!isNaN(event.target.dataset.value)) {
+      if (input.value === "0") input.value = ""
       if (inputArr[inputArr.length - 1] === ")") return
       input.value += event.target.dataset.value
       if (inputArr.length === 0) {
         inputArr.push(event.target.dataset.value)
+        state.push([...inputArr])
       } else if (
         isNaN(inputArr[inputArr.length - 1]) &&
         inputArr[inputArr.length - 1] !== ")"
       ) {
         inputArr.push(event.target.dataset.value)
+        state.push([...inputArr])
       } else {
         inputArr[inputArr.length - 1] += event.target.dataset.value
       }
@@ -372,6 +387,7 @@ buttonBlock.addEventListener("click", (event) => {
         if (inputArr[inputArr.length - 1] === "-") return
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
+        state.push([...inputArr])
       }
       if (event.target.dataset.value === "(") {
         if (input.value === "0") input.value = ""
@@ -415,6 +431,7 @@ buttonBlock.addEventListener("click", (event) => {
         if (input.value === "0") input.value = ""
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
+        state.push([...inputArr])
       }
       if (inputArr.length === 0) return
       if (
@@ -423,6 +440,7 @@ buttonBlock.addEventListener("click", (event) => {
       ) {
         input.value += event.target.dataset.value
         inputArr.push(event.target.dataset.value)
+        state.push([...inputArr])
       }
     }
   }
