@@ -1,4 +1,4 @@
-import { makeOreration } from "./operations"
+import { makeOperation } from "./makeOperations"
 import { poland } from "./poland"
 
 export const calc = (inputArr) => {
@@ -15,19 +15,19 @@ export const calc = (inputArr) => {
         arr[i] === "ln" ||
         arr[i] === "log10"
       ) {
-        let res = makeOreration([parseFloat(arr[i - 1])], arr[i])
+        let res = makeOperation([parseFloat(arr[i - 1])], arr[i])
         if (res === "Error") return "Error"
         arr.splice(i - 1, 2)
         arr.splice(i - 1, 0, res)
         i -= 1
       } else {
         if (arr[i] === "-" && (!arr[i - 2] || isNaN(arr[i - 2]))) {
-          let res = makeOreration([parseFloat(arr[i - 1])], "--")
+          let res = makeOperation([parseFloat(arr[i - 1])], "--")
           arr.splice(i - 1, 2)
           arr.splice(i - 1, 0, res)
           i -= 1
         } else {
-          let res = makeOreration(
+          let res = makeOperation(
             [parseFloat(arr[i - 2]), parseFloat(arr[i - 1])],
             arr[i]
           )
